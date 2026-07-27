@@ -1,43 +1,78 @@
 # HR Analytics Database Design
 
+## Database Name
+hr_analytics
+
 ## Tables
 
-1. employees
-2. departments
-3. job_roles
-4. education_levels
-5. education_fields
+### 1. employees
+Stores employee information.
+
+Primary Key:
+- EmployeeNumber
+
+Foreign Keys:
+- DepartmentID
+- JobRoleID
+- EducationID
+- EducationFieldID
+- TravelID
+
+---
+
+### 2. departments
+
+Stores department information.
+
+Primary Key:
+- DepartmentID
+
+---
+
+### 3. job_roles
+
+Stores employee job roles.
+
+Primary Key:
+- JobRoleID
+
+---
+
+### 4. education_levels
+
+Stores employee education levels.
+
+Primary Key:
+- EducationID
+
+---
+
+### 5. education_fields
+
+Stores employee education fields.
+
+Primary Key:
+- EducationFieldID
+
+---
+
+### 6. business_travel
+
+Stores employee travel frequency.
+
+Primary Key:
+- TravelID
+
+---
 
 ## Relationships
 
-- One Department has many Employees.
-- One Job Role has many Employees.
-- One Education Level has many Employees.
-- One Education Field has many Employees.
+Department → Employees (1:M)
 
-## Primary Keys
+Job Role → Employees (1:M)
 
-employees:
-- EmployeeNumber
+Education Level → Employees (1:M)
 
-departments:
-- DepartmentID
+Education Field → Employees (1:M)
 
-job_roles:
-- JobRoleID
-
-education_levels:
-- EducationID
-
-education_fields:
-- EducationFieldID
-
-## Foreign Keys
-
-employees.DepartmentID → departments.DepartmentID
-
-employees.JobRoleID → job_roles.JobRoleID
-
-employees.EducationID → education_levels.EducationID
-
-employees.EducationFieldID → education_fields.EducationFieldID
+Business Travel → Employees (1:M)
