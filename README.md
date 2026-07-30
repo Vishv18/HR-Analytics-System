@@ -5,13 +5,13 @@
 - ✅ Data Profiling
 - ✅ Data Dictionary
 - ✅ Database Design
-- ✅ Lookup Tables
-- ✅ Employee Table
-- ⬜ Import Employee Data
-- ⬜ SQL Data Analysis
+- 🟡 Employee Table Creation
+- ⬜ Import Dataset
+- ⬜ SQL Analysis
+- ⬜ Python EDA
 - ⬜ Power BI Dashboard
-- ⬜ Machine Learning Model
-- ⬜ Streamlit Application
+- ⬜ Machine Learning
+- ⬜ Streamlit Dashboard
 
 ## Database Progress
 

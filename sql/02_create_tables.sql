@@ -1,115 +1,81 @@
--- =========================================================
+-- ===================================================
 -- File: 02_create_tables.sql
--- Project: HR Analytics & Employee Attrition Prediction System
--- Description: Creates all lookup tables
--- =========================================================
+-- Project: HR Analytics & Employee Attrition Prediction
+-- Description: Creates Employees Table
+-- ===================================================
 
 USE hr_analytics;
 
--- ======================================
--- Table: departments
--- ======================================
-
-CREATE TABLE departments (
-    DepartmentID INT AUTO_INCREMENT PRIMARY KEY,
-    DepartmentName VARCHAR(50) NOT NULL UNIQUE
-);
-
--- ======================================
--- Table: job_roles
--- ======================================
-
-CREATE TABLE job_roles (
-    JobRoleID INT AUTO_INCREMENT PRIMARY KEY,
-    JobRoleName VARCHAR(100) NOT NULL UNIQUE
-);
-
--- ======================================
--- Table: education_fields
--- ======================================
-
-CREATE TABLE education_fields (
-    EducationFieldID INT AUTO_INCREMENT PRIMARY KEY,
-    EducationFieldName VARCHAR(100) NOT NULL UNIQUE
-);
-
--- ======================================
--- Table: employees
--- ======================================
-
 CREATE TABLE employees (
 
-    EmployeeNumber INT PRIMARY KEY,
+EmployeeNumber INT PRIMARY KEY,
 
-    Age TINYINT UNSIGNED NOT NULL,
+Age INT,
 
-    Attrition VARCHAR(3),
+Attrition VARCHAR(5),
 
-    BusinessTravel VARCHAR(30),
+BusinessTravel VARCHAR(30),
 
-    DailyRate INT,
+DailyRate INT,
 
-    DepartmentID INT,
+Department VARCHAR(50),
 
-    DistanceFromHome TINYINT UNSIGNED,
+DistanceFromHome INT,
 
-    Education TINYINT UNSIGNED,
+Education INT,
 
-    EducationFieldID INT,
+EducationField VARCHAR(50),
 
-    EnvironmentSatisfaction TINYINT UNSIGNED,
+EmployeeCount INT,
 
-    Gender VARCHAR(10),
+EnvironmentSatisfaction INT,
 
-    HourlyRate INT,
+Gender VARCHAR(10),
 
-    JobInvolvement TINYINT UNSIGNED,
+HourlyRate INT,
 
-    JobLevel TINYINT UNSIGNED,
+JobInvolvement INT,
 
-    JobRoleID INT,
+JobLevel INT,
 
-    JobSatisfaction TINYINT UNSIGNED,
+JobRole VARCHAR(100),
 
-    MaritalStatus VARCHAR(20),
+JobSatisfaction INT,
 
-    MonthlyIncome INT,
+MaritalStatus VARCHAR(20),
 
-    MonthlyRate INT,
+MonthlyIncome INT,
 
-    NumCompaniesWorked TINYINT UNSIGNED,
+MonthlyRate INT,
 
-    OverTime VARCHAR(5),
+NumCompaniesWorked INT,
 
-    PercentSalaryHike TINYINT UNSIGNED,
+Over18 VARCHAR(5),
 
-    PerformanceRating TINYINT UNSIGNED,
+OverTime VARCHAR(5),
 
-    RelationshipSatisfaction TINYINT UNSIGNED,
+PercentSalaryHike INT,
 
-    StockOptionLevel TINYINT UNSIGNED,
+PerformanceRating INT,
 
-    TotalWorkingYears TINYINT UNSIGNED,
+RelationshipSatisfaction INT,
 
-    TrainingTimesLastYear TINYINT UNSIGNED,
+StandardHours INT,
 
-    WorkLifeBalance TINYINT UNSIGNED,
+StockOptionLevel INT,
 
-    YearsAtCompany TINYINT UNSIGNED,
+TotalWorkingYears INT,
 
-    YearsInCurrentRole TINYINT UNSIGNED,
+TrainingTimesLastYear INT,
 
-    YearsSinceLastPromotion TINYINT UNSIGNED,
+WorkLifeBalance INT,
 
-    YearsWithCurrManager TINYINT UNSIGNED,
+YearsAtCompany INT,
 
-    FOREIGN KEY (DepartmentID)
-        REFERENCES departments(DepartmentID),
+YearsInCurrentRole INT,
 
-    FOREIGN KEY (JobRoleID)
-        REFERENCES job_roles(JobRoleID),
+YearsSinceLastPromotion INT,
 
-    FOREIGN KEY (EducationFieldID)
-        REFERENCES education_fields(EducationFieldID)
+YearsWithCurrManager INT
 
 );
