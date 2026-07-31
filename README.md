@@ -8,6 +8,7 @@
 - ✅ Database Created
 - ✅ HR Dataset Imported
 - ✅ Dataset Validation Completed
+- ✅ Basic HR Analysis
 - ⬜ Import Dataset
 - ⬜ SQL Analysis
 - ⬜ Python EDA
