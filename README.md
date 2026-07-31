@@ -5,7 +5,9 @@
 - ✅ Data Profiling
 - ✅ Data Dictionary
 - ✅ Database Design
-- 🟡 Employee Table Creation
+- ✅ Database Created
+- ✅ HR Dataset Imported
+- ✅ Dataset Validation Completed
 - ⬜ Import Dataset
 - ⬜ SQL Analysis
 - ⬜ Python EDA
