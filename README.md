@@ -10,6 +10,7 @@
 - ✅ Dataset Validation Completed
 - ✅ Basic HR Analysis
 - ✅ Department Analysis
+- ✅ Basic Workforce Analysis
 - ⬜ Import Dataset
 - ⬜ SQL Analysis
 - ⬜ Python EDA
