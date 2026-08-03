@@ -11,6 +11,7 @@
 - ✅ Basic HR Analysis
 - ✅ Department Analysis
 - ✅ Basic Workforce Analysis
+- ✅ Department Analysis
 - ⬜ Import Dataset
 - ⬜ SQL Analysis
 - ⬜ Python EDA
