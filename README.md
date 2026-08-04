@@ -12,6 +12,7 @@
 - ✅ Department Analysis
 - ✅ Basic Workforce Analysis
 - ✅ Department Analysis
+- ✅ Attrition Analysis
 - ⬜ Import Dataset
 - ⬜ SQL Analysis
 - ⬜ Python EDA
