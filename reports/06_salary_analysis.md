@@ -20,13 +20,16 @@ Analyze employee salaries to understand salary distribution across departments, 
 ## SQL Concepts Learned
 
 - GROUP BY
-- AVG()
-- ROUND()
+- Aggregate Functions (AVG, MIN, MAX, COUNT)
 - HAVING
 - Subqueries
+- Window Functions
+  - RANK()
+  - ROW_NUMBER()
+- PARTITION BY
+- Common Table Expressions (CTEs)
+- CASE WHEN (Bucketing)
 - ORDER BY
-- LIMIT
-
 ---
 
 ## Key Findings
