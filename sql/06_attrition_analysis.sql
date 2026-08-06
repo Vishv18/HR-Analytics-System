@@ -148,3 +148,61 @@ SELECT
 FROM employees
 GROUP BY JobSatisfaction
 ORDER BY JobSatisfaction;
+
+-- ===================================================
+-- Business Question 10
+-- Does business travel affect employee attrition?
+-- ===================================================
+
+SELECT
+    BusinessTravel,
+    COUNT(*) AS TotalEmployees,
+    SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) AS EmployeesLeft,
+    ROUND(
+        SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) * 100.0 /
+        COUNT(*),
+        2
+    ) AS AttritionRate
+FROM employees
+GROUP BY BusinessTravel
+ORDER BY AttritionRate DESC;
+
+-- ===================================================
+-- Business Question 11
+-- Does salary affect employee attrition?
+-- ===================================================
+
+SELECT
+    CASE
+        WHEN MonthlyIncome < 5000 THEN 'Low Salary'
+        WHEN MonthlyIncome BETWEEN 5000 AND 9999 THEN 'Medium Salary'
+        WHEN MonthlyIncome BETWEEN 10000 AND 14999 THEN 'High Salary'
+        ELSE 'Very High Salary'
+    END AS SalaryBand,
+
+    COUNT(*) AS TotalEmployees,
+
+    SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) AS EmployeesLeft,
+
+    ROUND(
+        SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) * 100.0 /
+        COUNT(*),
+        2
+    ) AS AttritionRate
+
+FROM employees
+
+GROUP BY SalaryBand
+
+ORDER BY AttritionRate DESC;
+
+-- ===================================================
+-- Business Question 12
+-- Average tenure based on attrition
+-- ===================================================
+
+SELECT
+    Attrition,
+    ROUND(AVG(YearsAtCompany),2) AS AverageYearsAtCompany
+FROM employees
+GROUP BY Attrition;
