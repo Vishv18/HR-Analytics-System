@@ -749,7 +749,7 @@ elif page == "Risk Prediction":
             status_text = "Moderate Risk"
             card_border = "rgba(245, 158, 11, 0.4)"
         else:
-            badge_class = "badge-emerald"
+            badge_class = "badge-emerald" 
             status_text = "Low Risk"
             card_border = "rgba(16, 185, 129, 0.4)"
 
