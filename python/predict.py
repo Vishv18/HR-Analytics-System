@@ -15,7 +15,7 @@ def predict_attrition(employee_data):
     employee_df = pd.DataFrame([employee_data])
 
     # Get probability of Attrition = Yes
-    probability = model.predict_proba(employee_df)[0][1]
+    probability = float(model.predict_proba(employee_df)[0][1])
 
     # Apply the selected threshold
     prediction = "Yes" if probability >= 0.50 else "No"

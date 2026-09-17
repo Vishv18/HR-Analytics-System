@@ -1,5 +1,6 @@
 import os
 import streamlit as st
+from python.predict import predict_attrition
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -375,7 +376,29 @@ elif page == "🔮 Attrition Prediction":
 
     st.divider()
     if st.button("🔮 Predict Attrition Risk", use_container_width=True):
-        st.warning("Machine-learning prediction backend interface ready for model connection.")
+        employee_data = {
+            "Age": age,
+            "Department": department,
+            "JobRole": job_role,
+            "MonthlyIncome": monthly_income,
+            "JobLevel": job_level,
+            "OverTime": overtime,
+            "JobSatisfaction": job_satisfaction,
+            "WorkLifeBalance": work_life_balance,
+            "YearsAtCompany": years_at_company,
+            "BusinessTravel": business_travel
+        }
+        prediction, probability = predict_attrition(employee_data)
+
+        risk_percentage = probability * 100
+
+        st.subheader("Prediction Result")
+
+        if prediction == "Yes":
+            st.error(f"🔴 High Attrition Risk — {risk_percentage:.1f}%")
+        else:
+            st.success(f"🟢 Low Attrition Risk — {risk_percentage:.1f}%")
+        
 
 # --------------------------------------------------
 # EMPLOYEE PROFILE
