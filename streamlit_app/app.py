@@ -757,9 +757,14 @@ elif page == "Risk Prediction":
             <div style="background: #0F172A; border: 1px solid {card_border}; border-radius: 16px; padding: 28px; text-align: center;">
                 <div class="badge {badge_class}" style="margin-bottom: 12px; font-size: 0.85rem; padding: 4px 14px;">{status_text}</div>
                 <div style="font-size: 3rem; font-weight: 800; color: #F8FAFC; line-height: 1;">{risk_pct:.1f}%</div>
-                <div style="font-size: 0.9rem; color: #94A3B8; margin-top: 8px;">Calculated Attrition Probability Score</div>
+                <div style="font-size: 0.9rem; color: #94A3B8; margin-top: 8px;">Model-estimated Attrition Risk</div>
             </div>
         """, unsafe_allow_html=True)
+        st.markdown(
+            "<div style='font-size: 0.78rem; color: #64748B; text-align: center; margin-top: 8px;'>"
+            "This is a model estimate based on the employee attributes provided.</div>",
+            unsafe_allow_html=True
+        )
 
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("### Actionable HR Recommendations")
@@ -792,89 +797,166 @@ elif page == "Employee Directory":
     """, unsafe_allow_html=True)
 
     if df_raw is not None:
-        emp_ids = sorted(df_raw['EmployeeNumber'].unique())
-        selected_id = st.selectbox("Select Employee ID to Inspect", emp_ids, index=0)
-
-        emp_row = df_raw[df_raw['EmployeeNumber'] == selected_id].iloc[0]
-
-        # Calculate live risk for selected employee
-        emp_dict = {
-            "Age": emp_row['Age'],
-            "Department": emp_row['Department'],
-            "JobRole": emp_row['JobRole'],
-            "MonthlyIncome": emp_row['MonthlyIncome'],
-            "JobLevel": emp_row['JobLevel'],
-            "OverTime": emp_row['OverTime'],
-            "JobSatisfaction": emp_row['JobSatisfaction'],
-            "WorkLifeBalance": emp_row['WorkLifeBalance'],
-            "YearsAtCompany": emp_row['YearsAtCompany'],
-            "BusinessTravel": emp_row['BusinessTravel']
-        }
-        pred, prob = predict_attrition(emp_dict)
-        risk_score = prob * 100
+        search_col, btn_col = st.columns([3, 1])
+        with search_col:
+            employee_id = st.text_input("Employee ID", placeholder="e.g. 42", label_visibility="collapsed")
+        with btn_col:
+            search_clicked = st.button("Search Employee", use_container_width=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        col_head1, col_head2 = st.columns([2, 1])
+        if search_clicked:
+            if not employee_id.strip():
+                st.warning("Please enter an Employee ID.")
+            else:
+                employee_match = df_raw[
+                    df_raw["EmployeeNumber"].astype(str) == employee_id.strip()
+                ]
 
-        with col_head1:
-            st.markdown(f"""
-                <div class="hr-card">
-                    <div style="display: flex; align-items: center; gap: 16px;">
-                        <div style="background: linear-gradient(135deg, #4F46E5, #4338CA); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; color: white;">
-                            #{emp_row['EmployeeNumber']}
+                if employee_match.empty:
+                    st.error("Employee not found.")
+                else:
+                    emp_row = employee_match.iloc[0]
+
+                    # Calculate live risk for the matched employee
+                    emp_dict = {
+                        "Age": emp_row['Age'],
+                        "Department": emp_row['Department'],
+                        "JobRole": emp_row['JobRole'],
+                        "MonthlyIncome": emp_row['MonthlyIncome'],
+                        "JobLevel": emp_row['JobLevel'],
+                        "OverTime": emp_row['OverTime'],
+                        "JobSatisfaction": emp_row['JobSatisfaction'],
+                        "WorkLifeBalance": emp_row['WorkLifeBalance'],
+                        "YearsAtCompany": emp_row['YearsAtCompany'],
+                        "BusinessTravel": emp_row['BusinessTravel']
+                    }
+                    pred, prob = predict_attrition(emp_dict)
+                    risk_score = prob * 100
+                    if prob >= 0.50:
+                        badge_type = "badge-rose"
+                    elif prob >= 0.30:
+                        badge_type = "badge-amber"
+                    else:
+                        badge_type = "badge-emerald"
+
+                    col_head1, col_head2 = st.columns([2, 1])
+
+                    with col_head1:
+                        st.markdown(f"""
+                            <div class="hr-card">
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <div style="background: linear-gradient(135deg, #4F46E5, #4338CA); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; color: white;">
+                                        #{emp_row['EmployeeNumber']}
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 1.3rem; font-weight: 800; color: #F8FAFC;">Employee #{emp_row['EmployeeNumber']}</div>
+                                        <div style="font-size: 0.9rem; color: #94A3B8;">{emp_row['JobRole']} | <span style="color: #818CF8;">{emp_row['Department']}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    with col_head2:
+                        st.markdown(f"""
+                            <div class="hr-card" style="text-align: center;">
+                                <div class="badge {badge_type}">Model-estimated Attrition Risk</div>
+                                <div style="font-size: 1.8rem; font-weight: 800; color: #F8FAFC; margin-top: 4px;">{risk_score:.1f}%</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    st.markdown(
+                        "<div style='font-size: 0.75rem; color: #64748B; margin-top: -8px; margin-bottom: 16px;'>"
+                        "Risk estimate generated by the trained attrition model.</div>",
+                        unsafe_allow_html=True
+                    )
+
+                    st.markdown("### Employee Information")
+                    i1, i2, i3 = st.columns(3)
+                    with i1:
+                        st.markdown(f"""
+                            <div class="kpi-card indigo">
+                                <div class="kpi-label">AGE</div>
+                                <div class="kpi-value">{emp_row['Age']} yrs</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+                    with i2:
+                        st.markdown(f"""
+                            <div class="kpi-card indigo">
+                                <div class="kpi-label">DEPARTMENT</div>
+                                <div class="kpi-value" style="font-size: 1.2rem;">{emp_row['Department']}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+                    with i3:
+                        st.markdown(f"""
+                            <div class="kpi-card indigo">
+                                <div class="kpi-label">JOB ROLE</div>
+                                <div class="kpi-value" style="font-size: 1.2rem;">{emp_row['JobRole']}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    st.markdown("### Compensation & Tenure")
+                    c1, c2, c3 = st.columns(3)
+                    with c1:
+                        st.markdown(f"""
+                            <div class="kpi-card emerald">
+                                <div class="kpi-label">MONTHLY INCOME</div>
+                                <div class="kpi-value">${emp_row['MonthlyIncome']:,}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+                    with c2:
+                        st.markdown(f"""
+                            <div class="kpi-card emerald">
+                                <div class="kpi-label">JOB LEVEL</div>
+                                <div class="kpi-value">{emp_row['JobLevel']}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+                    with c3:
+                        st.markdown(f"""
+                            <div class="kpi-card emerald">
+                                <div class="kpi-label">YEARS AT COMPANY</div>
+                                <div class="kpi-value">{emp_row['YearsAtCompany']}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    st.markdown("### Engagement")
+                    e1, e2, e3, e4 = st.columns(4)
+                    with e1:
+                        st.markdown(f"""
+                            <div class="kpi-card amber">
+                                <div class="kpi-label">JOB SATISFACTION</div>
+                                <div class="kpi-value">{emp_row['JobSatisfaction']} / 4</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+                    with e2:
+                        st.markdown(f"""
+                            <div class="kpi-card amber">
+                                <div class="kpi-label">WORK-LIFE BALANCE</div>
+                                <div class="kpi-value">{emp_row['WorkLifeBalance']} / 4</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+                    with e3:
+                        st.markdown(f"""
+                            <div class="kpi-card cyan">
+                                <div class="kpi-label">OVERTIME</div>
+                                <div class="kpi-value" style="font-size: 1.2rem;">{emp_row['OverTime']}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+                    with e4:
+                        st.markdown(f"""
+                            <div class="kpi-card cyan">
+                                <div class="kpi-label">BUSINESS TRAVEL</div>
+                                <div class="kpi-value" style="font-size: 1.1rem;">{emp_row['BusinessTravel']}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    st.markdown("### Attrition")
+                    attr_badge = "badge-rose" if str(emp_row['Attrition']).strip().lower() == "yes" else "badge-emerald"
+                    st.markdown(f"""
+                        <div class="hr-card">
+                            <div class="badge {attr_badge}">Attrition: {emp_row['Attrition']}</div>
                         </div>
-                        <div>
-                            <div style="font-size: 1.3rem; font-weight: 800; color: #F8FAFC;">Employee #{emp_row['EmployeeNumber']}</div>
-                            <div style="font-size: 0.9rem; color: #94A3B8;">{emp_row['JobRole']} | <span style="color: #818CF8;">{emp_row['Department']}</span></div>
-                        </div>
-                    </div>
-                </div>
-            """, unsafe_allow_html=True)
-
-        with col_head2:
-            badge_type = "badge-rose" if prob >= 0.5 else ("badge-amber" if prob >= 0.3 else "badge-emerald")
-            st.markdown(f"""
-                <div class="hr-card" style="text-align: center;">
-                    <div class="badge {badge_type}">Predicted Attrition Risk</div>
-                    <div style="font-size: 1.8rem; font-weight: 800; color: #F8FAFC; margin-top: 4px;">{risk_score:.1f}%</div>
-                </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("### Profile Overview")
-        p1, p2, p3, p4 = st.columns(4)
-        with p1:
-            st.markdown(f"""
-                <div class="kpi-card indigo">
-                    <div class="kpi-label">AGE & TENURE</div>
-                    <div class="kpi-value">{emp_row['Age']} yrs</div>
-                    <div class="kpi-sub">{emp_row['YearsAtCompany']} Yrs at Company</div>
-                </div>
-            """, unsafe_allow_html=True)
-        with p2:
-            st.markdown(f"""
-                <div class="kpi-card emerald">
-                    <div class="kpi-label">MONTHLY COMPENSATION</div>
-                    <div class="kpi-value">${emp_row['MonthlyIncome']:,}</div>
-                    <div class="kpi-sub">Job Level {emp_row['JobLevel']}</div>
-                </div>
-            """, unsafe_allow_html=True)
-        with p3:
-            st.markdown(f"""
-                <div class="kpi-card amber">
-                    <div class="kpi-label">SATISFACTION RATING</div>
-                    <div class="kpi-value">{emp_row['JobSatisfaction']} / 4</div>
-                    <div class="kpi-sub">Work-Life Balance: {emp_row['WorkLifeBalance']}/4</div>
-                </div>
-            """, unsafe_allow_html=True)
-        with p4:
-            st.markdown(f"""
-                <div class="kpi-card cyan">
-                    <div class="kpi-label">OVERTIME STATUS</div>
-                    <div class="kpi-value">{emp_row['OverTime']}</div>
-                    <div class="kpi-sub">Travel: {emp_row['BusinessTravel']}</div>
-                </div>
-            """, unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
 
 # --------------------------------------------------
 # 5. ABOUT
