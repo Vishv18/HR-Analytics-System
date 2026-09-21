@@ -39,3 +39,14 @@ y = df["Attrition"]
 
 print("Features selected:", len(features))
 print("Target:", "Attrition")
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.20,
+    random_state=42,
+    stratify=y
+)
+
+print("Training data:", X_train.shape)
+print("Testing data:", X_test.shape)
