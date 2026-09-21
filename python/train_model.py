@@ -20,3 +20,22 @@ df = pd.read_csv(DATA_PATH)
 
 print("Dataset loaded successfully.")
 print("Shape:", df.shape)
+
+features = [
+    "Age",
+    "Department",
+    "JobRole",
+    "MonthlyIncome",
+    "JobLevel",
+    "OverTime",
+    "JobSatisfaction",
+    "WorkLifeBalance",
+    "YearsAtCompany",
+    "BusinessTravel"
+]
+
+X = df[features]
+y = df["Attrition"]
+
+print("Features selected:", len(features))
+print("Target:", "Attrition")
