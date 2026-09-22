@@ -75,3 +75,24 @@ preprocessor = ColumnTransformer(
         ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features)
     ]
 )
+
+# Final Balanced Random Forest model
+model = RandomForestClassifier(
+    n_estimators=200,
+    max_depth=6,
+    class_weight="balanced",
+    random_state=42
+)
+
+# Complete ML pipeline
+pipeline = Pipeline(
+    steps=[
+        ("preprocessor", preprocessor),
+        ("model", model)
+    ]
+)
+
+# Train the final pipeline
+pipeline.fit(X_train, y_train)
+
+print("Model training completed.")
