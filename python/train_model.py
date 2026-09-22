@@ -9,6 +9,17 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_auc_score,
+    confusion_matrix
+)
+
+print("Model training completed.")
+
 # Project paths
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR / ".." / "data" / "raw" / "HR-Employee-Attrition.csv"
@@ -96,3 +107,37 @@ pipeline = Pipeline(
 pipeline.fit(X_train, y_train)
 
 print("Model training completed.")
+
+# Evaluate the final model
+test_probabilities = pipeline.predict_proba(X_test)[:, 1]
+
+test_predictions = [
+    "Yes" if probability >= 0.50 else "No"
+    for probability in test_probabilities
+]
+
+accuracy = accuracy_score(y_test, test_predictions)
+precision = precision_score(y_test, test_predictions, pos_label="Yes")
+recall = recall_score(y_test, test_predictions, pos_label="Yes")
+f1 = f1_score(y_test, test_predictions, pos_label="Yes")
+roc_auc = roc_auc_score(
+    y_test,
+    pipeline.predict_proba(X_test)[:, 1]
+)
+
+cm = confusion_matrix(y_test, test_predictions, labels=["No", "Yes"])
+
+print("\nFinal Model Evaluation")
+print("----------------------")
+print(f"Accuracy:  {accuracy:.4f}")
+print(f"Precision: {precision:.4f}")
+print(f"Recall:    {recall:.4f}")
+print(f"F1-score:  {f1:.4f}")
+print(f"ROC-AUC:   {roc_auc:.4f}")
+print("\nConfusion Matrix:")
+print(cm)
+
+# Save the trained pipeline
+joblib.dump(pipeline, MODEL_PATH)
+
+print(f"\nModel saved successfully to: {MODEL_PATH}")
