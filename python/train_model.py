@@ -50,3 +50,28 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print("Training data:", X_train.shape)
 print("Testing data:", X_test.shape)
+
+# Numerical features
+numeric_features = [
+    "Age",
+    "MonthlyIncome",
+    "JobLevel",
+    "JobSatisfaction",
+    "WorkLifeBalance",
+    "YearsAtCompany"
+]
+
+# Categorical features
+categorical_features = [
+    "Department",
+    "JobRole",
+    "OverTime",
+    "BusinessTravel"
+]
+# Preprocessing pipeline
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), numeric_features),
+        ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features)
+    ]
+)
