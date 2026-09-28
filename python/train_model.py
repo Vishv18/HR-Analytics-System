@@ -140,4 +140,4 @@ print(cm)
 # Save the trained pipeline
 joblib.dump(pipeline, MODEL_PATH)
 
-print(f"\nModel saved successfully to: {MODEL_PATH}")
+print(f"\nModel saved successfully to: {MODEL_PATH}")  
