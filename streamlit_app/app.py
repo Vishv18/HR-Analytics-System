@@ -13,7 +13,12 @@ st.set_page_config(
     page_title="HR Analytics Dashboard",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': None
+    }
 )
 
 # --------------------------------------------------
@@ -32,6 +37,41 @@ html, body, [class*="css"] {
 .stApp {
     background-color: #F7F8FA;
     color: #1F2937;
+}
+
+/* Keep sidebar always visible - hide collapse button */
+button[kind="header"] {
+    display: none !important;
+}
+
+[data-testid="collapsedControl"] {
+    display: none !important;
+}
+
+section[data-testid="stSidebarNav"] button {
+    display: none !important;
+}
+
+/* Force sidebar to stay visible */
+section[data-testid="stSidebar"] {
+    display: block !important;
+    visibility: visible !important;
+    width: 21rem !important;
+    min-width: 21rem !important;
+    max-width: 21rem !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+section[data-testid="stSidebar"] > div {
+    width: 21rem !important;
+    transform: none !important;
+}
+
+/* Adjust main content to account for sidebar */
+.main .block-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 /* Simple Header */
@@ -210,6 +250,48 @@ section[data-testid="stSidebar"] .stRadio input:checked + label span {
     background: #1D4ED8;
 }
 
+/* Sidebar toggle button styling */
+button[kind="header"] {
+    background-color: #2563EB !important;
+    color: white !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    border: none !important;
+}
+
+button[kind="header"]:hover {
+    background-color: #1D4ED8 !important;
+}
+
+/* Ensure toggle button is always visible */
+[data-testid="collapsedControl"] {
+    display: block !important;
+    position: fixed !important;
+    top: 0.5rem !important;
+    left: 0.5rem !important;
+    z-index: 999999 !important;
+    background-color: #2563EB !important;
+    color: white !important;
+    border-radius: 6px !important;
+    padding: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    cursor: pointer !important;
+}
+
+[data-testid="collapsedControl"]:hover {
+    background-color: #1D4ED8 !important;
+}
+
+[data-testid="collapsedControl"] svg {
+    color: white !important;
+    fill: white !important;
+}
+
+/* Make sure sidebar toggle in header is visible */
+.css-1cypcdb, [data-testid="stSidebarCollapse"] {
+    display: block !important;
+}
+
 /* Hide default clutter */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
@@ -281,7 +363,7 @@ with st.sidebar:
     st.markdown("**Navigation**")
 
     page = st.radio(
-        "nav",
+        "",
         [
             "Overview",
             "Analytics",
