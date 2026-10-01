@@ -250,6 +250,25 @@ section[data-testid="stSidebar"] .stRadio input:checked + label span {
     background: #1D4ED8;
 }
 
+/* Form labels - ensure they're visible */
+.stNumberInput > label,
+.stSelectbox > label,
+.stSlider > label {
+    color: #374151 !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+}
+
+/* Input fields styling */
+input[type="number"],
+div[data-baseweb="select"],
+div[data-baseweb="slider"] {
+    border: 1px solid #D1D5DB !important;
+    border-radius: 6px !important;
+}
+
 /* Sidebar toggle button styling */
 button[kind="header"] {
     background-color: #2563EB !important;
@@ -743,23 +762,23 @@ elif page == "Risk Prediction":
 
     with col1:
         st.markdown("#### Demographics & Role")
-        age = st.number_input("Age", min_value=18, max_value=70, value=32)
-        department = st.selectbox("Department", ["Sales", "Research & Development", "Human Resources"])
+        age = st.number_input("Age", min_value=18, max_value=70, value=32, key="age_input")
+        department = st.selectbox("Department", ["Sales", "Research & Development", "Human Resources"], key="dept_input")
         job_role = st.selectbox("Job Role", [
             "Sales Executive", "Research Scientist", "Laboratory Technician",
             "Manufacturing Director", "Healthcare Representative", "Manager",
             "Sales Representative", "Research Director", "Human Resources"
-        ])
-        monthly_income = st.number_input("Monthly income ($)", min_value=1000, max_value=100000, value=5500, step=500)
-        job_level = st.selectbox("Job level", [1, 2, 3, 4, 5], index=1)
+        ], key="role_input")
+        monthly_income = st.number_input("Monthly income ($)", min_value=1000, max_value=100000, value=5500, step=500, key="income_input")
+        job_level = st.selectbox("Job level", [1, 2, 3, 4, 5], index=1, key="level_input")
 
     with col2:
         st.markdown("#### Work Environment")
-        overtime = st.selectbox("OverTime", ["Yes", "No"], index=1)
-        job_satisfaction = st.select_slider("Job satisfaction", options=[1, 2, 3, 4], value=3, help="1: Low → 4: High")
-        work_life_balance = st.select_slider("Work-life balance", options=[1, 2, 3, 4], value=3, help="1: Low → 4: High")
-        years_at_company = st.number_input("Years at company", min_value=0, max_value=50, value=4)
-        business_travel = st.selectbox("Business travel", ["Travel_Rarely", "Travel_Frequently", "Non-Travel"])
+        overtime = st.selectbox("OverTime", ["Yes", "No"], index=1, key="overtime_input")
+        job_satisfaction = st.select_slider("Job satisfaction", options=[1, 2, 3, 4], value=3, help="1: Low → 4: High", key="satisfaction_input")
+        work_life_balance = st.select_slider("Work-life balance", options=[1, 2, 3, 4], value=3, help="1: Low → 4: High", key="balance_input")
+        years_at_company = st.number_input("Years at company", min_value=0, max_value=50, value=4, key="years_input")
+        business_travel = st.selectbox("Business travel", ["Travel_Rarely", "Travel_Frequently", "Non-Travel"], key="travel_input")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
