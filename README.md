@@ -1,267 +1,323 @@
-HR Analytics & Workforce Intelligence System
+# HR Analytics & Workforce Intelligence System
 
 A data analytics and machine learning project for analyzing employee attrition, workforce patterns, and employee-level attrition risk.
 
-The system combines MySQL, Python, Power BI, Machine Learning, and Streamlit into one workflow.
+The system combines **MySQL, Python, Power BI, Machine Learning, and Streamlit** into one end-to-end HR analytics workflow.
 
-Project Overview
+---
 
-Employee attrition can affect workforce stability and increase recruitment and training costs. This project analyzes historical HR employee data to identify workforce and attrition patterns and provides a machine-learning-based estimate of attrition risk for individual employees.
+## 📌 Project Overview
 
-The project has four main layers:
+Employee attrition can affect workforce stability and increase recruitment and training costs.
 
-MySQL – database storage and SQL analysis
+This project analyzes historical HR employee data to identify workforce and attrition patterns and provides a **machine-learning-based estimate of attrition risk for individual employees**.
 
-Python – data analysis and machine learning
+The project is organized into four main layers:
 
-Power BI – interactive business intelligence dashboards
+* **MySQL** — database storage and SQL analysis
+* **Python** — data analysis and machine learning
+* **Power BI** — interactive business intelligence dashboards
+* **Streamlit** — application interface connecting analytics and ML prediction
 
-Streamlit – application interface connecting analytics and ML prediction
+### Project Workflow
 
-Dataset
+```text
+HR Employee Dataset
+        │
+        ▼
+     MySQL
+        │
+        ├──────────────► SQL Analysis
+        │
+        ▼
+     Python
+        │
+        ├──────────────► Exploratory Data Analysis
+        │
+        └──────────────► Machine Learning
+                              │
+                              ▼
+                    Attrition Prediction Model
+                              │
+                 ┌────────────┴────────────┐
+                 ▼                         ▼
+             Power BI                  Streamlit
+          HR Analytics              Interactive App
+```
+
+---
+
+# 📊 Dataset
 
 The project uses an HR employee attrition dataset containing:
 
-1,470 employee records
-
-35 original attributes
-
-Employee demographics
-
-Department and job information
-
-Compensation
-
-Job satisfaction
-
-Work-life balance
-
-Overtime
-
-Business travel
-
-Years at company
-
-Attrition status
+* **1,470 employee records**
+* **35 original attributes**
+* Employee demographics
+* Department and job information
+* Compensation
+* Job satisfaction
+* Work-life balance
+* Overtime
+* Business travel
+* Years at company
+* Attrition status
 
 The target variable for machine learning is:
 
+```text
 Attrition → Yes / No
+```
 
-Project Features
+Where:
 
-1. HR Database
+* **Yes** = Employee left the organization
+* **No** = Employee stayed with the organization
 
-The dataset is stored in a MySQL database named:
+---
 
+# 🎯 Project Objectives
+
+The main objectives of the project are to:
+
+1. Store and manage HR employee data using a structured MySQL database.
+2. Analyze workforce distribution and employee attrition using SQL.
+3. Identify important workforce and attrition patterns through exploratory analysis.
+4. Build interactive HR dashboards using Power BI.
+5. Train and evaluate machine learning models for employee attrition prediction.
+6. Provide employee-level model-estimated attrition risk through a Streamlit application.
+7. Bring the analytics and prediction components together into one system.
+
+---
+
+# 🗄️ 1. HR Database
+
+The HR dataset is stored in a MySQL database named:
+
+```text
 hr_analytics
+```
 
 The database includes lookup tables such as:
 
-departments
-
-job_roles
-
-education_fields
+* `departments`
+* `job_roles`
+* `education_fields`
 
 and the main:
 
-employees
+* `employees`
 
 The database design is intended to reduce redundancy and maintain consistent employee-related information.
 
-2. SQL Analysis
+---
 
-SQL is used to analyze:
+# 🔎 2. SQL Analysis
 
-Workforce distribution
+SQL is used to analyze workforce and employee-level patterns.
 
-Department-wise employee counts
+The analysis covers areas such as:
 
-Attrition
+* Workforce distribution
+* Department-wise employee counts
+* Employee attrition
+* Salary patterns
+* Employee characteristics
+* Workforce retention questions
+* Department and job-related patterns
 
-Salary patterns
+The SQL analysis provides the foundation for understanding the dataset before moving into visualization and machine learning.
 
-Employee characteristics
+---
 
-Business questions related to workforce retention
+# 📈 3. Power BI Dashboard
 
-3. Power BI Dashboard
+The Power BI dashboard provides interactive HR analytics through three main pages.
 
-The Power BI dashboard provides interactive HR analytics through three main pages:
-
-Executive Overview
+### Executive Overview
 
 Provides a high-level view of:
 
-Total employees
+* Total employees
+* Employees who left
+* Attrition rate
+* Workforce indicators
+* Compensation indicators
 
-Employees who left
-
-Attrition rate
-
-Workforce and compensation indicators
-
-Attrition Analysis
+### Attrition Analysis
 
 Explores factors associated with employee attrition, including:
 
-Department
+* Department
+* Age
+* Overtime
+* Monthly income
+* Other employee characteristics
 
-Age
-
-Overtime
-
-Monthly income
-
-Other employee characteristics
-
-HR Insights / Workforce
+### HR Insights / Workforce
 
 Provides additional workforce-level analysis and employee insights.
 
-4. Machine Learning – Attrition Prediction
+Power BI is primarily used for **historical and descriptive HR analytics**, while the machine learning component focuses on employee-level attrition prediction.
+
+---
+
+# 🤖 4. Machine Learning — Attrition Prediction
+
+The machine learning component treats employee attrition prediction as a **binary classification problem**.
 
 Multiple classification models were trained and evaluated:
 
-Logistic Regression
+* Logistic Regression
+* Decision Tree
+* Random Forest
+* Balanced Random Forest
 
-Decision Tree
+The final prediction pipeline uses a **Balanced Random Forest** to address the class imbalance between employees who stayed and employees who left.
 
-Random Forest
+## Selected Features
 
-Balanced Random Forest
+The final model uses 10 employee attributes:
 
-The final prediction pipeline uses a Balanced Random Forest to address the class imbalance between employees who stayed and employees who left.
+1. Age
+2. Department
+3. Job Role
+4. Monthly Income
+5. Job Level
+6. Overtime
+7. Job Satisfaction
+8. Work-Life Balance
+9. Years at Company
+10. Business Travel
 
-The model uses 10 employee attributes:
+---
 
-Age
+## ⚙️ Machine Learning Workflow
 
-Department
+```text
+HR Dataset
+     │
+     ▼
+Feature Selection
+     │
+     ▼
+Train / Test Split
+     │
+     ▼
+Data Preprocessing
+     │
+     ▼
+Model Training
+     │
+     ├── Logistic Regression
+     ├── Decision Tree
+     ├── Random Forest
+     └── Balanced Random Forest
+     │
+     ▼
+Model Evaluation
+     │
+     ▼
+Final Balanced Random Forest
+     │
+     ▼
+Saved Model Pipeline
+     │
+     ▼
+Streamlit Prediction
+```
 
-Job Role
+---
 
-Monthly Income
+## 📏 Model Evaluation
 
-Job Level
+The models are evaluated using:
 
-Overtime
+* Accuracy
+* Precision
+* Recall
+* F1-score
+* ROC-AUC
+* Confusion Matrix
 
-Job Satisfaction
+### Final Test-Set Results
 
-Work-Life Balance
+| Metric    | Result |
+| --------- | -----: |
+| Accuracy  | 80.61% |
+| Precision | 41.67% |
+| Recall    | 53.19% |
+| F1-score  | 46.73% |
+| ROC-AUC   | 74.76% |
 
-Years at Company
+These results represent the performance of the final model on the held-out test set.
 
-Business Travel
+The model produces a **model-estimated attrition risk**, not a guaranteed prediction of an employee's future behavior.
 
-Model evaluation includes:
+---
 
-Accuracy
+# 🖥️ 5. Streamlit Application
 
-Precision
+The Streamlit application brings the project's analytics and machine learning components together into an interactive interface.
 
-Recall
+### Current Sections
 
-F1-score
+* **Overview**
+* **Analytics & Power BI**
+* **Risk Prediction**
+* **Employee Directory**
+* **About System**
 
-ROC-AUC
+---
 
-Confusion Matrix
-
-Final test-set results:
-
-Metric
-
-Result
-
-Accuracy
-
-80.61%
-
-Precision
-
-41.67%
-
-Recall
-
-53.19%
-
-F1-score
-
-46.73%
-
-ROC-AUC
-
-74.76%
-
-The model produces a model-estimated attrition risk for an employee rather than a guaranteed outcome.
-
-5. Streamlit Application
-
-The Streamlit application brings the project components together.
-
-Current sections:
-
-Overview
-
-Analytics & Power BI
-
-Risk Prediction
-
-Employee Directory
-
-About System
-
-Risk Prediction
+## 🔮 Risk Prediction
 
 Users can enter employee information and receive:
 
-Predicted attrition status
+* Predicted attrition status
+* Model-estimated attrition risk
+* Risk classification
+* Basic recommendations based on employee characteristics
 
-Model-estimated attrition risk
+The prediction is generated using the final trained machine learning pipeline.
 
-Risk classification
+---
 
-Basic recommendations based on employee characteristics
-
-Employee Directory
+## 👤 Employee Directory
 
 An employee can be searched using their Employee ID.
 
-The system displays:
+The system displays information such as:
 
-Employee profile information
+* Employee profile information
+* Actual attrition status
+* Model-estimated attrition risk
+* Relevant employee metrics
 
-Actual attrition status
+---
 
-Model-estimated attrition risk
+# 🧩 Technology Stack
 
-Relevant employee metrics
+| Technology       | Purpose                              |
+| ---------------- | ------------------------------------ |
+| **MySQL**        | Database management and SQL analysis |
+| **Python**       | Data analysis and machine learning   |
+| **Pandas**       | Data manipulation                    |
+| **NumPy**        | Numerical operations                 |
+| **Scikit-learn** | Machine learning                     |
+| **Joblib**       | Model saving and loading             |
+| **Power BI**     | Interactive HR dashboards            |
+| **Streamlit**    | Interactive web application          |
+| **Plotly**       | Interactive visualizations           |
+| **Matplotlib**   | Data visualization                   |
+| **Seaborn**      | Statistical visualization            |
+| **Git & GitHub** | Version control                      |
 
-Machine Learning Workflow
+---
 
-HR Dataset
-    ↓
-Feature Selection
-    ↓
-Train / Test Split
-    ↓
-Data Preprocessing
-    ↓
-Model Training
-    ↓
-Model Evaluation
-    ↓
-Final Balanced Random Forest
-    ↓
-Saved Model Pipeline
-    ↓
-Streamlit Prediction
+# 📁 Project Structure
 
-Project Structure
-
+```text
 HR-Analytics-System/
 │
 ├── dashboard/
@@ -272,6 +328,7 @@ HR-Analytics-System/
 │       └── HR-Employee-Attrition.csv
 │
 ├── database/
+│   └── ...
 │
 ├── notebooks/
 │   └── 01_ml_model.ipynb
@@ -281,8 +338,10 @@ HR-Analytics-System/
 │   └── predict.py
 │
 ├── reports/
+│   └── ...
 │
 ├── screenshots/
+│   └── ...
 │
 ├── sql/
 │   ├── database setup
@@ -292,132 +351,142 @@ HR-Analytics-System/
 ├── streamlit_app/
 │   └── app.py
 │
+├── .gitignore
+├── requirements.txt
 └── README.md
+```
 
-Technologies Used
+---
 
-Technology
+# 🚀 How to Run
 
-Purpose
+## 1. Clone the Repository
 
-MySQL
-
-Database management and SQL analysis
-
-Python
-
-Data analysis and ML
-
-Pandas
-
-Data manipulation
-
-Scikit-learn
-
-Machine learning
-
-Joblib
-
-Model saving/loading
-
-Power BI
-
-Interactive dashboards
-
-Streamlit
-
-Web application
-
-Plotly
-
-Interactive visualizations
-
-Git & GitHub
-
-Version control
-
-How to Run
-
-1. Clone the repository
-
+```bash
 git clone <repository-url>
 cd HR-Analytics-System
+```
 
-2. Install dependencies
+Replace `<repository-url>` with the URL of your GitHub repository.
 
-pip install pandas scikit-learn==1.7.2 joblib streamlit plotly
+---
 
-3. Run the Streamlit application
+## 2. Install Dependencies
 
+Make sure Python is installed, then run:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 3. Run the Streamlit Application
+
+From the project root:
+
+```bash
 python -m streamlit run streamlit_app/app.py
+```
 
-The application will open in the browser.
+The application will open in your browser.
 
-Current Project Status
+If it does not open automatically, use the local URL shown in the terminal, normally:
 
-✅ Project Planning
+```text
+http://localhost:8501
+```
 
-✅ Dataset Collection
+---
 
-✅ Data Profiling
+# 🧪 Project Status
 
-✅ Data Dictionary
+### Completed
 
-✅ Database Design
+* ✅ Project Planning
+* ✅ Dataset Collection
+* ✅ Data Profiling
+* ✅ Data Dictionary
+* ✅ Database Design
+* ✅ Database Creation
+* ✅ HR Dataset Import
+* ✅ Dataset Validation
+* ✅ SQL / HR Analysis
+* ✅ Department Analysis
+* ✅ Attrition Analysis
+* ✅ Salary Analysis
+* ✅ Python Analysis
+* ✅ Power BI Dashboard
+* ✅ Machine Learning Model
+* ✅ Model Evaluation
+* ✅ Streamlit Application
+* ✅ ML Prediction Integration
+* ✅ Employee Directory
+* ✅ Final ML Notebook
+* ✅ Project Dependencies
+* ✅ Git Repository Cleanup
 
-✅ Database Created
+### Remaining
 
-✅ HR Dataset Imported
+* ⬜ Final Documentation Review
+* ⬜ Final Testing
+* ⬜ Deployment
 
-✅ Dataset Validation
+---
 
-✅ SQL / HR Analysis
+# ⚠️ Limitations
 
-✅ Department Analysis
+The current system has several limitations:
 
-✅ Attrition Analysis
+* The model is trained on a historical HR dataset and may not generalize to other organizations.
+* Model-estimated risk should not be treated as a guaranteed outcome.
+* The current dataset represents a fixed historical snapshot rather than continuously updated HR data.
+* Model performance may change when applied to a different workforce or organizational environment.
+* Further model calibration and validation could improve the reliability of predicted probabilities.
 
-✅ Salary Analysis
+The prediction system should therefore be used as an **analytical support tool**, not as an automated decision-making system for employees.
 
-✅ Python Analysis
+---
 
-✅ Power BI Dashboard
-
-✅ Machine Learning Model
-
-✅ Model Evaluation
-
-✅ Streamlit Application
-
-✅ ML Prediction Integration
-
-✅ Employee Directory
-
-⬜ Final Documentation
-
-⬜ Final Testing & Deployment
-
-Future Scope
+# 🔮 Future Scope
 
 Possible future improvements include:
 
-Improved model calibration and validation
+* Improved model calibration and validation
+* Additional employee-level analytics
+* Automated model retraining
+* More advanced model explainability
+* Cloud deployment
+* Role-based access for HR users
+* Integration with live HR data
+* Continuous monitoring of model performance
 
-Additional employee-level analytics
+---
 
-Automated model retraining
+# 👨‍💻 Author
 
-More advanced explainability for predictions
+**Vishv Undavia**
 
-Cloud deployment
+Aspiring Data Analyst
 
-Role-based access for HR users
+---
 
-Integration with live HR data
+## 📌 Key Takeaway
 
-Author
+This project demonstrates an end-to-end data analytics workflow that combines:
 
-Vishv
+```text
+Database
+   ↓
+SQL Analysis
+   ↓
+Exploratory Data Analysis
+   ↓
+Power BI
+   ↓
+Machine Learning
+   ↓
+Streamlit Application
+```
 
-B.E. Computer Engineering
-CHARUSAT
+The goal is to demonstrate how HR data can be transformed from raw employee records into **business insights and model-estimated employee attrition risk** through a complete analytics workflow.
