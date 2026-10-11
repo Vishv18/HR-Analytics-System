@@ -48,3 +48,10 @@ dist/
 # Model / large generated files
 # Keep the final production model tracked
 # Do NOT ignore attrition_model.pkl unless it becomes too large for GitHub
+
+# Data analysis temporary files
+*.bak
+*.orig
+
+# Jupyter temporary files
+*.ipynb~
